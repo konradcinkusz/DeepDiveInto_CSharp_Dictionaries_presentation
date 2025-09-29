@@ -1,0 +1,168 @@
+% beamerthememybeamer.sty
+% -----------------------------------------------------------------------------
+% A small, modern beamer theme used by \usetheme{mybeamer}
+% Drop this file next to your .tex and compile.
+% -----------------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthememybeamer}[2025/08/14 v1.0 Minimal custom beamer theme]
+
+\mode<presentation>
+
+% Dependencies kept light and standard
+\RequirePackage{fontawesome5} 
+\RequirePackage{tabularx}
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+
+% ----------------------------- Color Palette ---------------------------------
+% Accessible-ish palette; tweak as you like.
+\definecolor{mbPrimary}{HTML}{0F766E} % teal
+\definecolor{mbAccent}{HTML}{8B5CF6}  % purple
+\definecolor{mbSecondary}{HTML}{2563EB}% blue
+\definecolor{mbBg}{HTML}{FFFFFF}      % white
+\definecolor{mbFg}{HTML}{111827}      % near-black
+\definecolor{mbMuted}{HTML}{6B7280}   % gray
+
+% Core beamer color bindings
+\setbeamercolor{normal text}{fg=mbFg,bg=mbBg}
+\setbeamercolor{structure}{fg=mbPrimary}
+\setbeamercolor{alerted text}{fg=mbAccent}
+
+% Title page
+\setbeamercolor{title}{fg=mbPrimary}
+\setbeamercolor{subtitle}{fg=mbMuted}
+\setbeamercolor{author}{fg=mbMuted}
+\setbeamercolor{date}{fg=mbMuted}
+\setbeamercolor{institute}{fg=mbMuted}
+
+% Blocks
+\setbeamercolor{block title}{fg=white,bg=mbPrimary}
+\setbeamercolor{block body}{fg=mbFg,bg=mbPrimary!5}
+
+\setbeamercolor{block title example}{fg=white,bg=mbSecondary}
+\setbeamercolor{block body example}{fg=mbFg,bg=mbSecondary!5}
+
+\setbeamercolor{block title alerted}{fg=white,bg=mbAccent}
+\setbeamercolor{block body alerted}{fg=mbFg,bg=mbAccent!6}
+
+% Footline / headline
+\setbeamercolor{footline}{fg=white,bg=mbPrimary}
+\setbeamercolor{headline}{fg=white,bg=mbPrimary}
+
+% ----------------------------- Fonts -----------------------------------------
+\usefonttheme{professionalfonts} % leave fonts to the document/class
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{series=\mdseries,size=\large}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamerfont{block title}{series=\bfseries}
+\setbeamerfont{footline}{size=\scriptsize}
+
+% ----------------------------- Itemize symbols -------------------------------
+\setbeamertemplate{items}[triangle]
+\setbeamertemplate{itemize items}[triangle]
+\setbeamertemplate{enumerate items}[default]
+
+% ----------------------------- Navigation ------------------------------------
+\setbeamertemplate{navigation symbols}{} % hide nav buttons
+
+% ----------------------------- Title page ------------------------------------
+\defbeamertemplate*{title page}{mybeamer}{
+  \vspace*{1.5em}
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}
+  \vspace{0.4em}
+  {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}
+  \vspace{1.2em}
+  {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}
+  {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}
+  {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}
+
+  % --- NEW: render titlegraphic block with links/icons ---
+  \vspace{0.8em}
+  {\inserttitlegraphic}
+
+  \vspace{1.0em}
+  % Accent rule
+  \begin{tikzpicture}
+    \fill[mbPrimary] (0,0) rectangle (\paperwidth,0.18cm);
+    \fill[mbAccent] (0,0.18) rectangle (.35\paperwidth,0.36cm);
+  \end{tikzpicture}
+}
+
+\setbeamertemplate{title page}[mybeamer]
+
+% ----------------------------- Frame title -----------------------------------
+\defbeamertemplate*{frametitle}{mybeamer}{
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3.2ex,dp=1.2ex,leftskip=1.2em,rightskip=1.2em]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}
+  % thin accent line under frametitle
+  \begin{tikzpicture}
+    \fill[mbPrimary] (0,0) rectangle (\paperwidth,0.06cm);
+  \end{tikzpicture}
+  \vspace{0.6ex}
+}
+\setbeamercolor{frametitle}{fg=mbFg,bg=mbBg}
+\setbeamertemplate{frametitle}[mybeamer]
+
+% ----------------------------- Footline --------------------------------------
+\defbeamertemplate*{footline}{mybeamer}{
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em,rightskip=1em]{footline}
+    \usebeamerfont{footline}%
+    % --- Left: GH icon + short author (URL) ---
+    \begingroup
+      \hypersetup{linkcolor=white,urlcolor=white}%
+      \faGithub\ \insertshortauthor
+    \endgroup
+    \hfill
+    % --- Center: short title (internal link to title frame) ---
+    \begingroup
+      \hypersetup{linkcolor=white}%
+      \insertshorttitle
+    \endgroup
+    \hfill
+    % --- Right: slide numbers ---
+    \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}%
+}
+
+
+% ----------------------------- Headline (optional) ---------------------------
+% Commented out by default to keep things clean.
+% \setbeamertemplate{headline}{
+%   \begin{beamercolorbox}[wd=\paperwidth,ht=1.6ex,dp=0ex]{headline}\end{beamercolorbox}
+% }
+
+% ----------------------------- Section styling --------------------------------
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamercolor{section in toc}{fg=mbPrimary}
+\setbeamercolor{subsection in toc}{fg=mbMuted}
+
+% ----------------------------- Standout frame option --------------------------
+% Your slides used \begin{frame}[standout] ...\end{frame}.
+% We emulate a simple "standout" look: solid background, white text, big title.
+\makeatletter
+\define@key{beamerframe}{standout}[true]{%
+  \setbeamercolor{background canvas}{bg=mbPrimary}%
+  \setbeamercolor{normal text}{fg=white,bg=mbPrimary}%
+  \setbeamercolor{frametitle}{fg=white,bg=mbPrimary}%
+  \setbeamerfont{frametitle}{series=\bfseries,size=\huge}%
+}
+\makeatother
+
+% ----------------------------- Block shapes -----------------------------------
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{caption}[numbered]
+
+% ----------------------------- Quotes ----------------------------------------
+\setbeamercolor{quote}{fg=mbMuted}
+\setbeamerfont{quote}{shape=\itshape}
+
+% ----------------------------- Code (minted/listings) ------------------------
+% Leave code styling to the document; theme stays agnostic.
+
+\mode<all>
